@@ -65,7 +65,7 @@ public class IaService {
             payload.put("stream", false);
             payload.put("format", "json");
 
-            payload.put("options", Map.of("temperature", 2));
+            payload.put("options", Map.of("temperature", 1));
 
             String json = mapper.writeValueAsString(payload);
 

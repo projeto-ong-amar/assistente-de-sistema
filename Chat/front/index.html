@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 400px;
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin: 5px 0;
+        }
+
+        .user {
+            text-align: right;
+            color: #38bdf8;
+        }
+
+        .bot {
+            text-align: left;
+            color: #a3e635;
+        }
+
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #38bdf8;
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="messages" id="messages"></div>
+
+    <input type="text" id="input" placeholder="Digite sua pergunta..." />
+    <button onclick="enviar()">Enviar</button>
+</div>
+
+<script>
+    async function enviar() {
+        const input = document.getElementById("input");
+        const messages = document.getElementById("messages");
+
+        const pergunta = input.value;
+        if (!pergunta) return;
+
+        messages.innerHTML += `<div class="message user">${pergunta}</div>`;
+
+        input.value = "";
+
+        try {
+            const response = await fetch("http://localhost:8080/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: pergunta
+            });
+
+            const resposta = await response.text();
+
+            messages.innerHTML += `<div class="message bot">${resposta}</div>`;
+
+            messages.scrollTop = messages.scrollHeight;
+
+        } catch (error) {
+            messages.innerHTML += `<div class="message bot">Erro ao conectar com a IA</div>`;
+        }
+    }
+</script>
+
+</body>
+</html>
