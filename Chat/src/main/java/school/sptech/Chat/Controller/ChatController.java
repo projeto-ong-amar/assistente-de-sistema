@@ -1,6 +1,7 @@
 package school.sptech.Chat.Controller;
 
 import org.springframework.web.bind.annotation.*;
+import school.sptech.Chat.DTO.PerguntaRequestDTO;
 import school.sptech.Chat.Service.IaService;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -15,7 +16,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public String chat(@RequestBody String pergunta) {
-        return iaService.responder(pergunta);
+    public String chat(@RequestBody PerguntaRequestDTO body) {
+        return iaService.responder(body.pergunta());
     }
 }
